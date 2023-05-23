@@ -1,0 +1,39 @@
+{
+  "projectData" :[
+    {
+    "ip": "192.168.5.68",
+    "gatewayName": "ahmed",
+    "subFormsData": [
+        {
+            "index": 0,
+            "vendorName": "aly",
+            "uId": "123",
+            "status": "0"
+        },
+        {
+          "index": 1,
+          "vendorName": "mohamws",
+          "uId": "123",
+          "status": "1"
+      }
+      ]
+    },{
+      "ip": "192.168.5.67",
+      "gatewayName": "jack",
+      "subFormsData": [
+          {
+              "index": 0,
+              "vendorName": "fady",
+              "uId": "123",
+              "status": "0"
+          },
+          {
+            "index": 1,
+            "vendorName": "ramy",
+            "uId": "123",
+            "status": "1"
+        }
+        ]
+      }
+  ]
+}
