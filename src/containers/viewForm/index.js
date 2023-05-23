@@ -3,14 +3,14 @@ import Card from 'react-bootstrap/Card';
 import CardList from '../../components/CardList';
 import Button from 'react-bootstrap/Button';
 
-export default function ViewForm({gateways, setSelectedGatway, setShowForms}) {
+export default function ViewForm({gateways, setSelectedGatway, setShowForms, setIsInAddMode}) {
 
   return (
     <Card>
         <Card.Header>
             <div className='d-flex justify-content-between align-items-center'>
                 <div>Gateways</div>
-                <Button variant="primary" onClick={() => {setShowForms(true);setSelectedGatway(false)}}>Add</Button>
+                <Button variant="primary" onClick={() => {setShowForms(true);setSelectedGatway(false);setIsInAddMode(true)}}>Add</Button>
             </div>
         </Card.Header>
         <CardList devicesData={gateways} setSelectedGatway={setSelectedGatway} setShowForms={setShowForms}/>

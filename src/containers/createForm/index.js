@@ -5,15 +5,16 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import CreateSubForm from '../createSubForm';
 import { validateEmptyString } from '../../utils/utils';
+import Alert from 'react-bootstrap/Alert';
 
-
-export default function CreateForm({selectedGateway, isInEditMode, setGateways, gateways}) {
+export default function CreateForm({selectedGateway, setSelectedGatway, isInEditMode, setGateways, gateways, isInAddMode, setIsInAddMode}) {
   const [subFormsData, setSubFormsData] = useState([]);
   const [devicesForms, setDevicesForms] = useState([<CreateSubForm gateways={gateways} selectedGateway={selectedGateway} setGateways={setGateways} key={0} index={0} subFormsData={subFormsData} setSubFormsData={setSubFormsData}/>]);
   const [ip,setIp] = useState('');
   const [gatewayName, setGatewayName] = useState('');
   const [isIinvalidIp, setisIinvalidIp] = useState(false);
   const [isIinvalidGatewayName, setisIinvalidGatewayName] = useState(false);
+  const [showMaxReachWarning, setShowMaxReachWarning] = useState(false);
 
   useEffect(()=>{
     if (!selectedGateway){
@@ -25,6 +26,8 @@ export default function CreateForm({selectedGateway, isInEditMode, setGateways, 
       setIp(selectedGateway.ip);
       setGatewayName(selectedGateway.gatewayName);
       setDevicesForms(selectedGateway.subFormsData);
+      setisIinvalidIp(false);
+      setisIinvalidGatewayName(false);
     }
   },[selectedGateway])
   const handleNameValidation = (currentValue) => {
@@ -44,22 +47,46 @@ export default function CreateForm({selectedGateway, isInEditMode, setGateways, 
     event.stopPropagation();
     handleFormValidation();
     console.log('>>>setSubFormsData',gateways)
-
-    if (!isIinvalidIp && !isIinvalidGatewayName && ip && gatewayName) {
+    console.log('>>>isIinvalidIp',isIinvalidIp)
+    console.log('>>>isIinvalidGatewayName',isIinvalidGatewayName)
+    console.log('>>ip',ip)
+    console.log('>>gatewayName',gatewayName)
+    console.log('>>isInAddMode',isInAddMode)
+    console.log('>>!',!isIinvalidIp && !isIinvalidGatewayName && ip.length > 0 && gatewayName.length > 0 & isInAddMode)
+    if (!isIinvalidIp && !isIinvalidGatewayName && ip.length > 0 && gatewayName.length > 0 & isInAddMode) { // Add mode
+      console.log('>>>neww')
+      setSelectedGatway({id: gateways.length + 1 ,ip, gatewayName, subFormsData});
+      setGateways((oldGateways) => [...oldGateways,{id: gateways.length + 1 ,ip, gatewayName, subFormsData}])
+      setIsInAddMode(false);
+      return;
+    }
+    console.log('>>!!', !isIinvalidIp && !isIinvalidGatewayName && ip.length && gatewayName.length & !isInAddMode)
+    if (!isIinvalidIp && !isIinvalidGatewayName && ip.length > 0 && gatewayName.length > 0 & !isInAddMode) { // Edit mode
       console.log('form is true')
-      setGateways((oldGateways) => [...oldGateways,{ip, gatewayName, subFormsData}])
-
-    } else {
-      console.log('form is erroe')
+      let editedGateWays = gateways;
+      const updatedSelectedGateway = editedGateWays.map((gateway) => {
+        if (gateway.id === selectedGateway.id){
+            let newGateway = gateway;
+            newGateway= {id: selectedGateway.id, ip, gatewayName, subFormsData};
+            return newGateway;
+        }
+        return gateway
+    })
+      console.log('>>>up',updatedSelectedGateway)
+      setGateways(updatedSelectedGateway)
     }
     // console.log('>>subFormsData',{ip, gatewayName, subFormsData})
   }
   
   const handleAddDeviceForm = (e) => {
     e.preventDefault();
+    if (devicesForms.length === 10){
+      return setShowMaxReachWarning(true)
+    }
     setDevicesForms([...devicesForms,<CreateSubForm gateways={gateways} isInEditMode={subFormsData} selectedGateway={selectedGateway} setGateways={setGateways} index={subFormsData.length} key={devicesForms.length} setSubFormsData={setSubFormsData} />]);
   }
   return (
+    <>
     <Card>
       <Card.Header>
             <div className='d-flex justify-content-between align-items-center'>
@@ -103,5 +130,11 @@ export default function CreateForm({selectedGateway, isInEditMode, setGateways, 
       </Form>
       </Card.Body>
     </Card>
+      {showMaxReachWarning && <Alert variant="danger" onClose={() => setShowMaxReachWarning(false)} dismissible>
+      <Alert.Heading>Oh snap! No more that 10 peripheral devices are allowed for a
+        gateway.</Alert.Heading>
+      </Alert>
+      }
+      </>
   )
 }

@@ -14,11 +14,12 @@ const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateway
     const [isUidInVaild, setIsUidInVaild] = useState(false);
 
     useEffect(()=>{
-
         if(subFormsData && isInEditMode){
             setVendorName(subFormsData.vendorName);
             setUid(subFormsData.uId);
             setStatus(subFormsData.status);
+            setIsUidInVaild(false);
+            setIsVendorNameInValid(false);
         }
     },[subFormsData, isInEditMode])
 
@@ -34,7 +35,7 @@ const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateway
         handleUidValidation(uId || '');
         if ((vendorName && uId && isInEditMode)){
             const updatedSelectedGateway = gateways.map((gateway) => {
-                if (gateway.ip === selectedGateway.ip){
+                if (gateway.id === selectedGateway.id){
                     const newGateway = gateway;
                     newGateway.subFormsData[index] = {index, vendorName, uId, status};
                     return newGateway;
