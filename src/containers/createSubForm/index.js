@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import { validateEmptyString } from '../../utils/utils';
 import Button from 'react-bootstrap/Button';
+import { updateGatways } from '../../services';
 
 
 const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateways, selectedGateway, index, gateways}) => {
@@ -38,6 +39,8 @@ const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateway
                 if (gateway.id === selectedGateway.id){
                     const newGateway = gateway;
                     newGateway.subFormsData[index] = {index, vendorName, uId, status};
+                    updateGatways(gateway.id, newGateway)
+
                     return newGateway;
                 }
                 return gateway
@@ -84,10 +87,15 @@ const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateway
                     <option value="1">Online</option>
                 </Form.Select>
             </Form.Group>
-
+            <div className='d-flex justify-content-between '>
             <Button variant="info" onClick={handleDeviceFormValidation}>
-            Save device info
-          </Button>
+                Save device info
+            </Button>
+
+            <Button variant="danger" onClick={handleDeviceFormValidation}>
+                Delete device info
+            </Button>
+            </div>
             </Card.Body>
     </Card>
   )}

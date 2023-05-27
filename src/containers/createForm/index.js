@@ -6,6 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import CreateSubForm from '../createSubForm';
 import { validateEmptyString } from '../../utils/utils';
 import Alert from 'react-bootstrap/Alert';
+import { AddGatways, updateGatways } from '../../services';
 
 export default function CreateForm({selectedGateway, setSelectedGatway, isInEditMode, setGateways, gateways, isInAddMode, setIsInAddMode}) {
   const [subFormsData, setSubFormsData] = useState([]);
@@ -56,7 +57,8 @@ export default function CreateForm({selectedGateway, setSelectedGatway, isInEdit
     if (!isIinvalidIp && !isIinvalidGatewayName && ip.length > 0 && gatewayName.length > 0 & isInAddMode) { // Add mode
       console.log('>>>neww')
       setSelectedGatway({id: gateways.length + 1 ,ip, gatewayName, subFormsData});
-      setGateways((oldGateways) => [...oldGateways,{id: gateways.length + 1 ,ip, gatewayName, subFormsData}])
+      setGateways((oldGateways) => [...oldGateways,{id: gateways.length + 1 ,ip, gatewayName, subFormsData}]);
+      AddGatways({id: gateways.length + 1 ,ip, gatewayName, subFormsData})
       setIsInAddMode(false);
       return;
     }
@@ -64,18 +66,21 @@ export default function CreateForm({selectedGateway, setSelectedGatway, isInEdit
     if (!isIinvalidIp && !isIinvalidGatewayName && ip.length > 0 && gatewayName.length > 0 & !isInAddMode) { // Edit mode
       console.log('form is true')
       let editedGateWays = gateways;
+      let gatewayId = null;
       const updatedSelectedGateway = editedGateWays.map((gateway) => {
         if (gateway.id === selectedGateway.id){
+          debugger
+            gatewayId = gateway.id 
             let newGateway = gateway;
-            newGateway= {id: selectedGateway.id, ip, gatewayName, subFormsData};
+            newGateway= {id: selectedGateway.id, ip, gatewayName, subFormsData:selectedGateway.subFormsData};
+            updateGatways(gatewayId, newGateway)
             return newGateway;
         }
         return gateway
     })
       console.log('>>>up',updatedSelectedGateway)
-      setGateways(updatedSelectedGateway)
+      setGateways(updatedSelectedGateway);
     }
-    // console.log('>>subFormsData',{ip, gatewayName, subFormsData})
   }
   
   const handleAddDeviceForm = (e) => {

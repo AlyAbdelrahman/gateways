@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CreateForm from '../createForm'
 import ViewForm from "../viewForm";
+import { fetchGatways } from '../../services';
 
 export default function FormsBox() {
 
@@ -10,25 +11,15 @@ export default function FormsBox() {
   const [isInAddMode, setIsInAddMode] = useState(false);
   const [showForms, setShowForms] = useState(false);
   useEffect(() => {
-    const fetchGatways = async () => {
-      const results = await fetch('http://localhost:5000/projectData');
-      const data = await results.json();
-      setGateways(data)
-    }
-    fetchGatways();
+    fetchGatways().then((data)=>setGateways(data));
   }, [])
 
-  useEffect(() => {
-    // console.log('sec',selectedGateway)
-    // setSelectedGatway()
-  }, [selectedGateway])
   const handleSelectGatway = (selectedGateway) => {
     if (selectedGateway === false) {
       setSelectedGatway(null);
       setIsInAddMode(false);
       return;
     }
-    console.log('..sec', selectedGateway);
     setIsInEditMode(true);
     setSelectedGatway(selectedGateway);
     setIsInAddMode(false);
