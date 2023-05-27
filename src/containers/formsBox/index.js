@@ -43,6 +43,7 @@ export default function FormsBox() {
           gateways={gateways}
           selectedGateway={selectedGateway}
           isInEditMode={isInEditMode}
+          setShowForms={setShowForms}
         />
       </div>}
     </div>

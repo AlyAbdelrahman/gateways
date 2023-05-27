@@ -6,9 +6,9 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import CreateSubForm from '../createSubForm';
 import { validateEmptyString } from '../../utils/utils';
 import Alert from 'react-bootstrap/Alert';
-import { AddGatways, updateGatways } from '../../services';
+import { AddGatways, updateGatways, DeleteGatwayDevice } from '../../services';
 
-export default function CreateForm({selectedGateway, setSelectedGatway, isInEditMode, setGateways, gateways, isInAddMode, setIsInAddMode}) {
+export default function CreateForm({selectedGateway, setSelectedGatway, isInEditMode, setGateways, gateways, isInAddMode, setIsInAddMode, setShowForms}) {
   const [subFormsData, setSubFormsData] = useState([]);
   const [devicesForms, setDevicesForms] = useState([<CreateSubForm gateways={gateways} selectedGateway={selectedGateway} setGateways={setGateways} key={0} index={0} subFormsData={subFormsData} setSubFormsData={setSubFormsData}/>]);
   const [ip,setIp] = useState('');
@@ -69,7 +69,6 @@ export default function CreateForm({selectedGateway, setSelectedGatway, isInEdit
       let gatewayId = null;
       const updatedSelectedGateway = editedGateWays.map((gateway) => {
         if (gateway.id === selectedGateway.id){
-          debugger
             gatewayId = gateway.id 
             let newGateway = gateway;
             newGateway= {id: selectedGateway.id, ip, gatewayName, subFormsData:selectedGateway.subFormsData};
@@ -90,8 +89,28 @@ export default function CreateForm({selectedGateway, setSelectedGatway, isInEdit
     }
     setDevicesForms([...devicesForms,<CreateSubForm gateways={gateways} isInEditMode={subFormsData} selectedGateway={selectedGateway} setGateways={setGateways} index={subFormsData.length} key={devicesForms.length} setSubFormsData={setSubFormsData} />]);
   }
+ const  handleDeleteGateway = () => {
+  let deletedGatewayId;
+    const updatedSelectedGateway = gateways.filter((gateway) => {
+      if (gateway.id === selectedGateway.id){
+          // const newGateway = gateway;
+          // selectedGatewayId = gateway
+          deletedGatewayId = gateway.id; 
+          console.log('>>>selectt',gateway)
+          return;
+        }
+      return gateway
+  })
+  console.log('>>deletedGatewayId',deletedGatewayId)
+  // updateGatways(gateway.id, {})
+  DeleteGatwayDevice(deletedGatewayId, {})
+  console.log('>>>up',updatedSelectedGateway)
+  setGateways(updatedSelectedGateway)
+  setShowForms(false)
+  }
+
   return (
-    <>
+    <>  
     <Card>
       <Card.Header>
             <div className='d-flex justify-content-between align-items-center'>
@@ -120,9 +139,7 @@ export default function CreateForm({selectedGateway, setSelectedGatway, isInEdit
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
-
-        {devicesForms &&  devicesForms.map((deviceForm, index) => (<CreateSubForm gateways={gateways} selectedGateway={selectedGateway} setGateways={setGateways} isInEditMode={isInEditMode} key={index} index={index} subFormsData={deviceForm} setSubFormsData={setSubFormsData}/>))}
-        {/* {!isInEditMode && devicesForms} */}
+        {devicesForms &&  devicesForms.map((deviceForm, index) => (deviceForm && <CreateSubForm gateways={gateways} selectedGateway={selectedGateway} setGateways={setGateways} isInEditMode={isInEditMode} key={index} index={index} subFormsData={deviceForm} setSubFormsData={setSubFormsData}/>))}
         <div className='d-flex justify-content-between mt-3'>
           <Button variant="primary" type="submit">
             Submit
@@ -130,7 +147,9 @@ export default function CreateForm({selectedGateway, setSelectedGatway, isInEdit
           <Button variant="secondary" onClick={handleAddDeviceForm}>
             Add device
           </Button>
-          
+          <Button variant="danger" onClick={handleDeleteGateway}>
+            Delete Gatway
+          </Button>
         </div>
       </Form>
       </Card.Body>

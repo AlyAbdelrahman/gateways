@@ -1,58 +1,51 @@
 {
   "projectData": [
     {
-      "id": 1,
-      "ip": "192.168.5.67",
-      "gatewayName": "jackkkzzz",
-      "subFormsData": [
-        {
-          "index": 0,
-          "vendorName": "yuuuuu",
-          "uId": "123",
-          "status": "1"
-        },
-        {
-          "index": 1,
-          "vendorName": "reem",
-          "uId": "123",
-          "status": "1"
-        }
-      ]
+      "id": 1
     },
     {
-      "id": 2,
-      "ip": "192.168.5.61",
-      "gatewayName": "ahmed",
-      "subFormsData": [
-        {
-          "index": 0,
-          "vendorName": "glal",
-          "uId": "123",
-          "status": "0"
-        },
-        {
-          "index": 1,
-          "vendorName": "yasser",
-          "uId": "123",
-          "status": "1"
-        }
-      ]
+      "id": 2
     },
     {
-      "id": 3,
+      "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "id": 5
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 7,
       "ip": "192.168.5.68",
-      "gatewayName": "yasser",
+      "gatewayName": "malak",
+      "subFormsData": [
+        {
+          "index": 1,
+          "vendorName": "laila",
+          "uId": "23421",
+          "status": 0
+        },
+        null,
+        {
+          "index": 2,
+          "vendorName": "mazen",
+          "uId": "3874893"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "ip": "192.168.5.68",
+      "gatewayName": "koko",
       "subFormsData": [
         {
           "index": 0,
-          "vendorName": "test",
-          "uId": "12344",
-          "status": "1"
-        },
-        {
-          "index": 1,
-          "vendorName": "test2",
-          "uId": "888"
+          "vendorName": "yasser",
+          "uId": "2194124"
         }
       ]
     }

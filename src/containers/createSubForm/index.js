@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup'
 import { validateEmptyString } from '../../utils/utils';
 import Button from 'react-bootstrap/Button';
-import { updateGatways } from '../../services';
+import { DeleteGatwayDevice, updateGatways } from '../../services';
 
 
 const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateways, selectedGateway, index, gateways}) => {
@@ -50,7 +50,22 @@ const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateway
         else if (vendorName && uId){
             setSubFormsData((formsData) => [...formsData,{index: formsData.length + 1, vendorName, uId, status}])
         }
-    }    
+    }   
+    
+    const handleDeleteDevice = () => {
+            const updatedSelectedGateway = gateways.map((gateway) => {
+                if (gateway.id === selectedGateway.id){
+                    const newGateway = gateway;
+                    delete newGateway.subFormsData[index]
+                    DeleteGatwayDevice(gateway.id,newGateway)
+                    // updateGatways(gateway.id, newGateway)
+                    return newGateway;
+                }
+                return gateway
+            })
+            console.log('>>>up',updatedSelectedGateway)
+            setGateways(updatedSelectedGateway)
+    }
   return (
     <Card className='mb-2'>
       <Card.Header>
@@ -92,7 +107,7 @@ const  CreateSubForm = ({setSubFormsData, subFormsData, isInEditMode, setGateway
                 Save device info
             </Button>
 
-            <Button variant="danger" onClick={handleDeviceFormValidation}>
+            <Button variant="danger" onClick={handleDeleteDevice}>
                 Delete device info
             </Button>
             </div>
